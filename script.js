@@ -41,12 +41,29 @@ function applyLanguage(language) {
 }
 languageButton.addEventListener('click', () => applyLanguage(currentLanguage === 'zh' ? 'en' : 'zh'));
 const slides = [...document.querySelectorAll('.showcase-slide')];
-const dots = [...document.querySelectorAll('.showcase-dots i')];
+const dots = [...document.querySelectorAll('.showcase-dots button')];
 let activeSlide = 0;
-setInterval(() => {
+const showSlide = (index) => {
   slides[activeSlide].classList.remove('is-active');
   dots[activeSlide].classList.remove('is-active');
-  activeSlide = (activeSlide + 1) % slides.length;
+  activeSlide = index;
   slides[activeSlide].classList.add('is-active');
   dots[activeSlide].classList.add('is-active');
+};
+dots.forEach((dot, index) => dot.addEventListener('click', () => showSlide(index)));
+setInterval(() => {
+  showSlide((activeSlide + 1) % slides.length);
 }, 4500);
+
+const lightbox = document.querySelector('.image-lightbox');
+const lightboxImage = lightbox.querySelector('img');
+const closeLightbox = () => { lightbox.hidden = true; document.body.classList.remove('lightbox-open'); };
+slides.forEach((slide) => slide.addEventListener('click', () => {
+  lightboxImage.src = slide.src;
+  lightboxImage.alt = slide.alt;
+  lightbox.hidden = false;
+  document.body.classList.add('lightbox-open');
+}));
+document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', (event) => { if (event.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !lightbox.hidden) closeLightbox(); });
