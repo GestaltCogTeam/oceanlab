@@ -10,7 +10,12 @@ const translations = {
     enginesTitle: '技术亮点', engines: [['GC-EdCastX 涡旋预报', '时空物理知识嵌入的涡旋预报方法，关联相邻时刻的涡旋演变，精准勾勒未来十天涡旋位置、半径、振幅与中心高度的逐日演变。'], ['GC-3DEddy 三维重建', '仅使用海表卫星观测数据的涡旋三维结构预测方法，结合预训练自回归大模型技术构建涡旋次表层初始结构，突破了依赖再分析数据预测的限制。'], ['交互式三维可视化', '三维地球上的全球涡旋分布与轨迹动画，柱状等值面透视次表层温盐结构，支持温盐 / 异常场切换与深度切片交互，全部在浏览器中完成。'], ['权威数据底座', '接入 CMEMS、AVISO、GLORYS12V1 再分析与预报产品，数据来源权威可溯，结果可下载、可复现。']],
     resultsTitle: '成果亮点', results: ['全球涡旋在线追踪，历史轨迹逐日回放。', '未来十天轨迹预测与三维重建一体化，次表层结构同步呈现。', '预测与重建精度对标现有全球海洋预报 AI 系统，核心指标全面领先。', '涡旋参数、1/12° 三维结构与高清快照一键下载，成果即取即用。'],
     scenariosTitle: '应用场景', scenarios: [['海洋科学研究', '为涡旋动力机制、水团输运研究提供即开即用的在线分析工具，让灵感不必等待数据。'], ['涡旋结构分析', '从轨迹追踪到三维结构的全流程可视化，涡旋垂向结构一览无余。'], ['渔业与航运参考', '涡旋位置与演化预报，为渔场研判与航线规划抢占先机。'], ['科研教学', '交互式可视化让中尺度涡旋现象触手可及，服务海洋学教学与科普。']],
-    ctaTitle: '观沧海，知涡旋', ctaDesc: '东临碣石，以观沧海。潮起潮落处，每个涡旋的来路与去向，尽收眼底。'
+    ctaTitle: '观沧海，知涡旋', ctaDesc: '东临碣石，以观沧海。潮起潮落处，每个涡旋的来路与去向，尽收眼底。',
+    labels: {
+      home: '观沧首页', brand: '观沧 · GestaltCog', nav: '主导航', language: 'Switch to English',
+      showcase: '观沧平台界面', slides: ['观沧平台全球涡旋分布与轨迹界面', '观沧平台涡旋轨迹预测界面', '观沧平台次表层三维结构界面'],
+      showSlide: (number) => `显示第 ${number} 张图片`, preview: '图片预览', closePreview: '关闭图片预览', demo: '观沧平台演示视频'
+    }
   },
   en: {
     badge: 'GestaltCog', heroTitle: 'GestaltCog · OceanLab', heroTagline: 'See the Ocean Through Guancang, Foresee the Eddies Ahead', heroDesc: 'Physics-informed eddy forecasting meets sea-surface-observation-based 3D reconstruction — eddy tracking, subsurface structures, and ten-day forecasts, all presented online in one place.', enterPlatform: 'Enter the Platform',
@@ -18,28 +23,50 @@ const translations = {
     enginesTitle: 'Technical Highlights', engines: [['GC-EdCastX Eddy Forecasting', 'A spatiotemporal physics-informed eddy forecasting method that links eddies across consecutive time steps, precisely charting the daily evolution of position, radius, amplitude, and central height over the next ten days.'], ['GC-3DEddy 3D Reconstruction', "A 3D eddy structure reconstruction method driven solely by sea-surface satellite observations, combining pretrained autoregressive large-model techniques to build the eddy's initial subsurface structure — breaking free from the reliance on reanalysis data."], ['Interactive 3D Visualization', 'Global eddy distributions and animated trajectories on a 3D globe, columnar isosurfaces revealing subsurface temperature-salinity structures, with temperature / salinity / anomaly modes and interactive depth slices — all in the browser.'], ['Authoritative Data Foundation', 'Built on CMEMS, AVISO, GLORYS12V1 reanalysis and forecast products — traceable data sources, reproducible results, ready for download.']],
     resultsTitle: 'Key Results', results: ['Global eddies tracked online, historical trajectories replayed day by day.', '10-day trajectory forecasting and 3D reconstruction integrated in one, subsurface structures evolving in sync.', 'Prediction and reconstruction accuracy benchmarked against existing global ocean forecasting AI systems, leading on core metrics.', 'Eddy parameters, 1/12° 3D structures, and high-resolution snapshots downloadable in one click.'],
     scenariosTitle: 'Applications', scenarios: [['Ocean Science Research', 'An open-and-go online analysis tool for eddy dynamics and water mass transport studies — so ideas never wait for data.'], ['Eddy Structure Analysis', 'A full visualization pipeline from trajectory tracking to 3D structure, laying the vertical architecture of every eddy bare.'], ['Fisheries & Shipping Reference', 'Eddy position and evolution forecasts, giving fishing ground assessment and route planning a head start.'], ['Research & Education', 'Interactive visualization that brings mesoscale eddies within reach, serving oceanography teaching and outreach.']],
-    ctaTitle: 'Behold the Ocean, Know the Eddies', ctaDesc: 'Where tides rise and fall, the past and future of every eddy unfolds before your eyes.'
+    ctaTitle: 'Behold the Ocean, Know the Eddies', ctaDesc: 'Where tides rise and fall, the past and future of every eddy unfolds before your eyes.',
+    labels: {
+      home: 'OceanLab home', brand: 'GestaltCog', nav: 'Main navigation', language: '切换为中文',
+      showcase: 'OceanLab screenshots', slides: ['Global eddy distribution and trajectories in OceanLab', 'Eddy trajectory forecasts in OceanLab', 'Subsurface 3D eddy structure in OceanLab'],
+      showSlide: (number) => `Show image ${number}`, preview: 'Image preview', closePreview: 'Close image preview', demo: 'OceanLab demonstration video'
+    }
   }
 };
 
-let currentLanguage = 'zh';
+let currentLanguage = document.documentElement.lang;
 const languageButton = document.querySelector('[data-lang-toggle]');
 const setText = (selector, value) => document.querySelector(selector).textContent = value;
+const setLabel = (selector, value) => document.querySelector(selector).setAttribute('aria-label', value);
 function applyLanguage(language) {
   const t = translations[language];
   currentLanguage = language;
   document.documentElement.lang = language === 'en' ? 'en' : 'zh-CN';
+  document.title = t.heroTitle;
   languageButton.textContent = language === 'en' ? '中' : 'EN';
   document.querySelectorAll('.main-nav a').forEach((el, index) => { el.textContent = t.nav[index]; });
   document.querySelector('[data-i18n="badge"]').textContent = t.badge;
-  setText('[data-i18n="heroTitle"]', t.heroTitle); setText('[data-i18n="heroTagline"]', t.heroTagline); setText('[data-i18n="heroDesc"]', t.heroDesc); setText('[data-i18n="enterPlatform"]', t.enterPlatform);
+  setText('[data-i18n="heroTitle"]', t.heroTitle); setText('[data-i18n="heroTagline"]', t.heroTagline); setText('[data-i18n="heroDesc"]', t.heroDesc);
+  document.querySelectorAll('[data-i18n="enterPlatform"]').forEach((label) => { label.textContent = t.enterPlatform; });
   setText('.intro h2', t.introTitle); document.querySelectorAll('.intro-text p').forEach((el, index) => { el.textContent = t.intro[index]; });
   setText('.section-heading h2', t.enginesTitle); document.querySelectorAll('.engine-card h3').forEach((el, index) => { el.textContent = t.engines[index][0]; }); document.querySelectorAll('.card-detail').forEach((el, index) => { el.textContent = t.engines[index][1]; });
   setText('.results h2', t.resultsTitle); document.querySelectorAll('.result-list p').forEach((el, index) => { el.textContent = t.results[index]; });
   setText('.scenario-grid h2', t.scenariosTitle); document.querySelectorAll('.scenario-items h3').forEach((el, index) => { el.textContent = t.scenarios[index][0]; }); document.querySelectorAll('.scenario-items p').forEach((el, index) => { el.textContent = t.scenarios[index][1]; });
   setText('.cta h2', t.ctaTitle); setText('.cta-content>p:not(.kicker)', t.ctaDesc);
+  setText('.site-footer > span', t.heroTitle);
+
+  languageButton.setAttribute('aria-label', t.labels.language);
+  setLabel('.top-brand', t.labels.home);
+  setLabel('.main-nav', t.labels.nav);
+  setLabel('.showcase', t.labels.showcase);
+  setLabel('.image-lightbox', t.labels.preview);
+  setLabel('.lightbox-close', t.labels.closePreview);
+  setLabel('.demo-video', t.labels.demo);
+  document.querySelectorAll('.brand img').forEach((image) => { image.alt = t.labels.brand; });
+  document.querySelectorAll('.showcase-slide').forEach((slide, index) => { slide.alt = t.labels.slides[index]; });
+  document.querySelectorAll('.showcase-dots button').forEach((dot, index) => {
+    dot.setAttribute('aria-label', t.labels.showSlide(index + 1));
+  });
 }
-languageButton.addEventListener('click', () => applyLanguage(currentLanguage === 'zh' ? 'en' : 'zh'));
+languageButton.addEventListener('click', () => applyLanguage(currentLanguage === 'en' ? 'zh' : 'en'));
 const slides = [...document.querySelectorAll('.showcase-slide')];
 const dots = [...document.querySelectorAll('.showcase-dots button')];
 let activeSlide = 0;
